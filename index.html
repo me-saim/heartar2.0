@@ -4,12 +4,31 @@
   <meta charset="UTF-8">
   <title>WebAR with Three.js</title>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/ar.js/2.0.1/aframe-ar.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 </head>
-<body style="margin: 0; overflow: hidden;">
-  <a-scene embedded arjs>
-    <a-entity gltf-model="url(heartar.glb)" scale="1 1 1" position="0 0 0"></a-entity>
-    <a-marker-camera preset='hiro'></a-marker-camera>
-  </a-scene>
+<body>
+  <script>
+    // Create a Three.js scene
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    // Load the GLTF model
+    const loader = new THREE.GLTFLoader();
+    loader.load('heartar.glb', function (gltf) {
+      scene.add(gltf.scene);
+    });
+
+    camera.position.z = 2;
+
+    // Render loop
+    function animate() {
+      requestAnimationFrame(animate);
+      renderer.render(scene, camera);
+    }
+    animate();
+  </script>
 </body>
 </html>
